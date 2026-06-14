@@ -31,6 +31,11 @@ jobs:
       # Build React application
       - name: Build Application
         run: npm run build
+      - name: Debug Secrets
+        run: |
+            echo "Host Exists: ${{ secrets.EC2_HOST != '' }}"
+            echo "Username Exists: ${{ secrets.EC2_USERNAME != '' }}"
+            echo "Key Exists: ${{ secrets.EC2_KEY != '' }}"
 
       # Remove old files from Apache directory
       - name: Clean Apache Directory
