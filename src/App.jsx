@@ -12,9 +12,9 @@ function App() {
       <section id="center">
       
         <div>
-          <h1>Get started</h1>
+          <h1>Muniganti Ramesh</h1>
           <p>
-            Application created with Vite and React. Click the button to increase the count!
+            EC2 instance is running and the React app is deployed successfully. You can now access the application through the public IP address of your EC2 instance.
           </p>
         </div>
         <button
