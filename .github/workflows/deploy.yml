@@ -34,7 +34,7 @@ jobs:
 
       # Remove old files from Apache directory
       - name: Clean Apache Directory
-        uses: appleboy/ssh-action@v4
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USER }}
@@ -45,7 +45,7 @@ jobs:
 
       # Copy build files to EC2
       - name: Copy Build Files
-        uses: appleboy/scp-action@v4
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USER }}
@@ -55,7 +55,7 @@ jobs:
 
       # Move files to Apache web root
       - name: Deploy to Apache
-        uses: appleboy/ssh-action@v4
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USER }}
