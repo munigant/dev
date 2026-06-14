@@ -1,0 +1,69 @@
+name: Deploy React App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{ secrets.EC2_USER }}
+      EC2_KEY: ${{ secrets.EC2_KEY }}
+
+    steps:
+      # Checkout source code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Build React application
+      - name: Build Application
+        run: npm run build
+
+      # Remove old files from Apache directory
+      - name: Clean Apache Directory
+        uses: appleboy/ssh-action@v4
+        with:
+          host: ${{ env.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ env.EC2_KEY }}
+          script: |
+            sudo rm -rf /var/www/html/*
+            sudo mkdir -p /var/www/html
+
+      # Copy build files to EC2
+      - name: Copy Build Files
+        uses: appleboy/scp-action@v4
+        with:
+          host: ${{ env.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ env.EC2_KEY }}
+          source: "dist/*"
+          target: "/tmp/react-build"
+
+      # Move files to Apache web root
+      - name: Deploy to Apache
+        uses: appleboy/ssh-action@v4
+        with:
+          host: ${{ env.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ env.EC2_KEY }}
+          port: 22
+          script: |
+            sudo cp -r /tmp/react-build/dist/* /var/www/html/
+            sudo chown -R apache:apache /var/www/html
+            sudo chmod -R 755 /var/www/html
+            sudo systemctl restart httpd
+            sudo systemctl enable httpd
