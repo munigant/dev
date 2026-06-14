@@ -22,7 +22,6 @@ function App() {
           Count is {count}
         </button>
       </section>
-      <section id="spacer"></section>
     </>
   )
 }
