@@ -1,12 +1,6 @@
-# My React App
+## React App
 
 This project is a React + Vite application with a custom homepage and an EC2 deployment workflow for publishing the app to an Apache web server.
-
-## What changed
-
-- Added a custom landing page in `src/App.jsx` with the heading "Muniganti Ramesh" and a deployment success message.
-- Added GitHub Actions deployment automation in `.github/workflows/deploy.yml` for pushing the production build to an EC2 instance.
-- Kept the default Vite scripts for local development, building, and previewing the app.
 
 ## Features
 
